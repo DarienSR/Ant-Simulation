@@ -155,11 +155,11 @@ Camera:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.53400004, g: 0.4988875, b: 0.9528302, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
-  m_FOVAxisMode: 0
+  m_FOVAxisMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
   m_FocalLength: 50
@@ -234,6 +234,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dirt: {fileID: 403809774442685379, guid: f397648241905fb4099b01f38e448166, type: 3}
   grass: {fileID: 403809774442685379, guid: ae65ede3af49bf64198fe6d09bc2f0da, type: 3}
+  NestOpening: {fileID: 2100000, guid: a3ef2c14b9f561748899622c04fb409b, type: 2}
+  NestBorder: {fileID: 2100000, guid: 0554876991a859f49a28b845aa434fe3, type: 2}
 --- !u!4 &1836900795
 Transform:
   m_ObjectHideFlags: 0
