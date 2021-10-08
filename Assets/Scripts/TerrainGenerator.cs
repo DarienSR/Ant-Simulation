@@ -6,11 +6,15 @@ public class TerrainGenerator : MonoBehaviour
 {
     private int rows = 100;
     private int cols = 100;
+    public int antStartSize = 50;
     public GameObject dirt;
     public GameObject grass;
+    public GameObject antPrefab;
     public Material NestOpening;
     public Material NestBorder;
+
     private GameObject[,] tileMap;
+    private GameObject[] ants;
     
     private int nestWidth = 6;
 
@@ -19,9 +23,11 @@ public class TerrainGenerator : MonoBehaviour
     void Start()
     {
         tileMap = new GameObject[rows, cols];
+        ants = new GameObject[antStartSize];
         biomeSeperatorAtY = 35;
         GenerateTerrain();
         GenerateNest();
+        SpawnInitialAnts();
     }
 
     private void GenerateTerrain()
@@ -65,6 +71,13 @@ public class TerrainGenerator : MonoBehaviour
 
     private void SpawnInitialAnts()
     {
-
+        for(int i = 0; i < antStartSize; i++)
+        {
+            GameObject ant;
+            ant = (GameObject)Instantiate(antPrefab, transform);
+            ant.transform.position = tileMap[biomeSeperatorAtY + 4, (rows / 2)].transform.position;
+            ant.name = i.ToString();
+            ants[i] = ant;
+        }
     }
 }
