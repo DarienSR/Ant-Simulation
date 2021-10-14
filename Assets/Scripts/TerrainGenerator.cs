@@ -7,13 +7,16 @@ public class TerrainGenerator : MonoBehaviour
     private int rows = 100;
     private int cols = 100;
     public int antStartSize = 50;
+
     public GameObject dirt;
     public GameObject grass;
-    public GameObject antPrefab;
-    public Material NestOpening;
-    public Material NestBorder;
+    public GameObject nestOpening;
+    public GameObject nestBorder;
 
-    private GameObject[,] tileMap;
+    public GameObject antPrefab;
+
+
+    public GameObject[,] tileMap;
     private GameObject[] ants;
     
     private int nestWidth = 6;
@@ -24,7 +27,7 @@ public class TerrainGenerator : MonoBehaviour
     {
         tileMap = new GameObject[rows, cols];
         ants = new GameObject[antStartSize];
-        biomeSeperatorAtY = 35;
+        biomeSeperatorAtY = 40;
         GenerateTerrain();
         GenerateNest();
         SpawnInitialAnts();
@@ -59,12 +62,32 @@ public class TerrainGenerator : MonoBehaviour
         {
             for(int j = 0; j < 3; j++)
             {
-                // nest border and area ([up/down, across])
-                tileMap[biomeSeperatorAtY + j, (rows / 2) + i - j].GetComponent<Renderer>().material = NestBorder; // right side
-                tileMap[biomeSeperatorAtY + j, (rows / 2) - i + j].GetComponent<Renderer>().material = NestBorder; // left side
+                // Destory orignal dirt/grass blocks
+                Destroy(tileMap[biomeSeperatorAtY + j, (rows / 2) + i - j]);
+                Destroy(tileMap[biomeSeperatorAtY + j, (rows / 2) - i + j]);
+                Destroy(tileMap[biomeSeperatorAtY + j, (rows / 2)]);
 
+                // nest border and area ([up/down, across])
+                // right side of nest
+                Transform posBorderRight = tileMap[biomeSeperatorAtY + j, (rows / 2) + i - j].transform;
+                GameObject tileBorderRight = (GameObject)Instantiate(nestBorder, transform);
+                tileBorderRight.transform.position = new Vector2(posBorderRight.position.x, posBorderRight.position.y);
+                tileMap[biomeSeperatorAtY + j, (rows / 2) + i - j] = tileBorderRight;
+                tileBorderRight.name = "TileBorder";
+
+                // left side of nest
+                Transform posBorderLeft = tileMap[biomeSeperatorAtY + j, (rows / 2) - i + j].transform;
+                GameObject tileBorderLeft = (GameObject)Instantiate(nestBorder, transform);
+                tileBorderLeft.transform.position = new Vector2(posBorderLeft.position.x, posBorderLeft.position.y);
+                tileMap[biomeSeperatorAtY + j, (rows / 2) - i + j] = tileBorderLeft;
+                tileBorderLeft.name = "TileBorder";
+                
                 // nest opening
-                tileMap[biomeSeperatorAtY + j, (rows / 2)].GetComponent<Renderer>().material = NestOpening;
+                Transform posTileOpening = tileMap[biomeSeperatorAtY + j, (rows / 2)].transform;
+                GameObject tileOpening = (GameObject)Instantiate(nestOpening, transform);
+                tileOpening.transform.position = new Vector2(posTileOpening.position.x, posTileOpening.position.y);
+                tileMap[biomeSeperatorAtY + j, (rows / 2)] = tileOpening;
+                tileOpening.name = "TileOpening";
             }
         }
     }
@@ -76,8 +99,14 @@ public class TerrainGenerator : MonoBehaviour
             GameObject ant;
             ant = (GameObject)Instantiate(antPrefab, transform);
             ant.transform.position = tileMap[biomeSeperatorAtY + 4, (rows / 2)].transform.position;
-            ant.name = i.ToString();
+            ant.name = "Ant: " + i.ToString();
             ants[i] = ant;
         }
+    }
+
+    public GameObject[,] GetArray()
+    {
+        Debug.Log("HERE");
+        return tileMap;
     }
 }

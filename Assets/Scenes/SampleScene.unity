@@ -257,6 +257,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1836900795}
   - component: {fileID: 1836900794}
+  - component: {fileID: 1836900796}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -277,12 +278,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   antStartSize: 50
-  dirt: {fileID: 403809774442685379, guid: f397648241905fb4099b01f38e448166, type: 3}
-  grass: {fileID: 403809774442685379, guid: ae65ede3af49bf64198fe6d09bc2f0da, type: 3}
+  dirt: {fileID: 7294592221676255821, guid: f397648241905fb4099b01f38e448166, type: 3}
+  grass: {fileID: 330212315855264124, guid: ae65ede3af49bf64198fe6d09bc2f0da, type: 3}
+  nestOpening: {fileID: 5070626434809207933, guid: 63ef626b5f83e1743ad08bab64a7be15,
+    type: 3}
+  nestBorder: {fileID: 7344520940241528791, guid: 9a3d19e451c774c4d9b51f4308a3d7d4,
+    type: 3}
   antPrefab: {fileID: 4886690271722837566, guid: 79220275ca190e74fa2423fab472a9e8,
     type: 3}
-  NestOpening: {fileID: 2100000, guid: a3ef2c14b9f561748899622c04fb409b, type: 2}
-  NestBorder: {fileID: 2100000, guid: 0554876991a859f49a28b845aa434fe3, type: 2}
 --- !u!4 &1836900795
 Transform:
   m_ObjectHideFlags: 0
@@ -297,3 +300,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1836900796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836900793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a41bc15a14f8949b64452184051884, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NestOpening: {fileID: 2100000, guid: a3ef2c14b9f561748899622c04fb409b, type: 2}
