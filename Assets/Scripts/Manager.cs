@@ -26,7 +26,7 @@ public class Manager : MonoBehaviour
         {
             GameObject ant;
             ant = (GameObject)Instantiate(antPrefab, transform);
-            ant.transform.position = new Vector2(110.6f, 15.9f);
+            ant.transform.position = new Vector2(-5, -15f);
             ant.name = "Ant: " + i.ToString();
             ants[i] = ant;
         }
