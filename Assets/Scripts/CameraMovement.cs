@@ -17,23 +17,23 @@ public class CameraMovement : MonoBehaviour
     {        
         if(Input.GetKey("w"))
         {
-            if(camera.transform.position.y + 1 > 75) return;
+            // if(camera.transform.position.y + 1 > 75) return;
             camera.transform.position = new Vector3(camera.transform.position.x, camera.transform.position.y + 1, camera.transform.position.z);
         }
         if(Input.GetKey("a"))
         {
-            if(camera.transform.position.x - 1 < 25) return;
+            // if(camera.transform.position.x - 1 < 25) return;
             camera.transform.position = new Vector3(camera.transform.position.x - 1, camera.transform.position.y, camera.transform.position.z);
         }
 
         if(Input.GetKey("s"))
         {
-            if(camera.transform.position.y - 1 < 25) return;
+            // if(camera.transform.position.y - 1 < 25) return;
             camera.transform.position = new Vector3(camera.transform.position.x, camera.transform.position.y - 1, camera.transform.position.z);
         }
         if(Input.GetKey("d"))
         {
-            if(camera.transform.position.x + 1 > 75) return;
+            // if(camera.transform.position.x + 1 > 75) return;
             camera.transform.position = new Vector3(camera.transform.position.x + 1, camera.transform.position.y, camera.transform.position.z);
         }
 
