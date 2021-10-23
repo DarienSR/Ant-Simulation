@@ -1,50 +1,42 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
+
 public class Ant : MonoBehaviour
 {
-  public float moveSpeed = 5f; 
-  public Transform movePoint;
-  public LayerMask Collider;
-  string[] directions = new string[] {"Up", "Down", "Left", "Right"};
+    public GridMap grid;
+    public int x;
+    public int y;
+    // Start is called before the first frame update
+    void Start()
+    {
+        grid.GetComponent<Grid>();
+        
+    }
 
-  void Start()
-  {
-    movePoint.parent = null;
-  }
-  // Update is called once per frame
-  void Update()
-  {
-    transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime); // Move to new position
-    string direction = directions[Random.Range(0, directions.Length)]; // select direction
-    if(Vector3.Distance(transform.position, movePoint.position) < .01f) // when we have reached the new position
+    // Update is called once per frame
+    void Update()
     {
-      MoveAnt(direction);
-    }  
-  }
+        Move();
+    }
 
-  void MoveAnt(string direction) 
-  {
-    if(direction == "Up")
+
+
+    public void Move() 
     {
-      if(!Physics2D.OverlapCircle(movePoint.position + new Vector3(0f, 1f, 0f), .2f, Collider)) // do not move onto layers with collide
-        movePoint.position += new Vector3(0f, 1f, 0f);
-    } 
-    else if(direction == "Down") 
-    {
-      if(!Physics2D.OverlapCircle(movePoint.position + new Vector3(0f, -1f, 0f), .2f, Collider)) // do not move onto layers with collide
-        movePoint.position += new Vector3(0f, -1f, 0f);
+        // Get Current Grid Tile
+        GameObject currentTileGO = (GameObject)grid.tileMap[x, y];
+        
+        Tile currentTile = currentTileGO.GetComponent<Tile>();
+        // Determine where to move
+        int selectedTileIndex = Random.Range(0, 9);
+
+        // Get that tiles position
+        GameObject selectedTile = currentTile.SelectNeighbour(selectedTileIndex);
+        x = (int)selectedTile.transform.position.x;
+        y = (int)selectedTile.transform.position.y;
+        Vector2 newPos = new Vector2(selectedTile.transform.position.x, selectedTile.transform.position.y);
+        // Set position to that tile
+        gameObject.transform.position = newPos;
     }
-    else if(direction == "Left") 
-    {
-      if(!Physics2D.OverlapCircle(movePoint.position + new Vector3(-1f, 0f, 0f), .2f, Collider)) // do not move onto layers with collide
-        movePoint.position += new Vector3(-1f, 0, 0f);
-    }
-    else if(direction == "Right") 
-    {
-      if(!Physics2D.OverlapCircle(movePoint.position + new Vector3(1f, 0f, 0f), .2f, Collider)) // do not move onto layers with collide
-        movePoint.position += new Vector3(1f, 0, 0f);
-    }
-  }
 }
