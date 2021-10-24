@@ -10,8 +10,7 @@ public class Ant : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        grid.GetComponent<Grid>();
-        
+        grid = GameObject.Find("Grid").GetComponent<GridMap>();
     }
 
     // Update is called once per frame
@@ -20,11 +19,10 @@ public class Ant : MonoBehaviour
         Move();
     }
 
-
-
     public void Move() 
     {
         // Get Current Grid Tile
+
         GameObject currentTileGO = (GameObject)grid.tileMap[x, y];
         
         Tile currentTile = currentTileGO.GetComponent<Tile>();
