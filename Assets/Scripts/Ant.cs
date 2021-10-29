@@ -9,6 +9,9 @@ public class Ant : MonoBehaviour
     public int y;
     private Trail trail;
     private string antType = "Scout";
+    private Color trailColor = Color.red;
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +30,7 @@ public class Ant : MonoBehaviour
     {
         GameObject currentTileGO = (GameObject)grid.tileMap[x, y];
         Tile currentTile = currentTileGO.GetComponent<Tile>();
-        trail.PlaceTrail(antType, currentTile);
+        trail.PlaceTrail(antType, trailColor, currentTile);
     }    
 
     public GameObject Move() 
@@ -50,8 +53,17 @@ public class Ant : MonoBehaviour
         return selectedTile; // will be used to update the pheromone level of the tile
     }
 
-    public void BringFoodBackToNest()
+    public void UpdateAntToScavenger()
     {
-        Debug.Log("Bringing food back");
+        // Update antType
+        antType = "Scavenger";
+        // Update trail color
+        trailColor = Color.blue;
+        // Make way back to the nest
+    }
+
+    public void NavigateBackToNest()
+    {
+        
     }
 }

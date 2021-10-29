@@ -13,7 +13,8 @@ public class Food : MonoBehaviour
             Destroy(gameObject);
         else
         {
-            ant.gameObject.GetComponent<Ant>().BringFoodBackToNest();
+            ant.gameObject.GetComponent<Ant>().UpdateAntToScavenger();
+            ant.gameObject.GetComponent<Ant>().NavigateBackToNest();
             health--;
         }
     }
