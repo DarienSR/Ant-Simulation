@@ -7,15 +7,13 @@ public class Ant : MonoBehaviour
     public GridMap grid;
     public int x;
     public int y;
-    private int destroyTime;
-    public GameObject trailPrefab; 
-    
-
+    private Trail trail;
+    private string antType = "Scout";
     // Start is called before the first frame update
     void Start()
     {
         grid = GameObject.Find("Grid").GetComponent<GridMap>();
-        destroyTime = 2;
+        trail = GetComponent<Trail>();
     }
 
     // Update is called once per frame
@@ -29,17 +27,8 @@ public class Ant : MonoBehaviour
     {
         GameObject currentTileGO = (GameObject)grid.tileMap[x, y];
         Tile currentTile = currentTileGO.GetComponent<Tile>();
-        GameObject trail = (GameObject) Instantiate(trailPrefab);
-        trail.transform.position = currentTile.transform.position;
-        StartCoroutine(DestroyTrail(trail));
-    }
-
-    IEnumerator DestroyTrail(GameObject trail)
-    {
-        yield return new WaitForSeconds(destroyTime);
-        Destroy(trail);
-    }
-    
+        trail.PlaceTrail(antType, currentTile);
+    }    
 
     public GameObject Move() 
     {
@@ -59,5 +48,10 @@ public class Ant : MonoBehaviour
         // Set position to that tile
         gameObject.transform.position = newPos;
         return selectedTile; // will be used to update the pheromone level of the tile
+    }
+
+    public void BringFoodBackToNest()
+    {
+        Debug.Log("Bringing food back");
     }
 }

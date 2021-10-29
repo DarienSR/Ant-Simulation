@@ -51,4 +51,6 @@ MonoBehaviour:
     type: 3}
   antPrefab: {fileID: 7713868236454161778, guid: df8f5aea9f844814783ac13ffe945f6c,
     type: 3}
+  foodPrefab: {fileID: 1502991473055593264, guid: 108eb5d0ac1bb9848843e45bd036f205,
+    type: 3}
   antSpawnSize: 50
