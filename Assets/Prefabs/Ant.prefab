@@ -108,3 +108,5 @@ MonoBehaviour:
   grid: {fileID: 4147719371422676756, guid: cb0ba7ad0f90cfe4ab8dd9b1992f7a96, type: 3}
   x: 50
   y: 40
+  trailPrefab: {fileID: 8365157599596032461, guid: b9d4d5b11022fab4ab393239b61e5329,
+    type: 3}

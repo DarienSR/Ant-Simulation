@@ -8,6 +8,9 @@ public class Tile : MonoBehaviour
     private GridMap map;
     public int x;
     public int y;
+
+    float pheromoneLevel = 0;
+
     GameObject[] neighbours = new GameObject[8];
     // Start is called before the first frame update
     void Start()
@@ -39,5 +42,10 @@ public class Tile : MonoBehaviour
 
     private void OnMouseDown() {
         Debug.Log(map.tileMap[x,y]);
+    }
+
+    public void UpdatePheromoneLevel()
+    {
+
     }
 }
