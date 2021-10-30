@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Tile : MonoBehaviour
 {
     public GameObject grid;
@@ -9,43 +9,79 @@ public class Tile : MonoBehaviour
     public int x;
     public int y;
 
-    float pheromoneLevel = 0;
-
-    GameObject[] neighbours = new GameObject[8];
+    public float pheromoneLevel = 0;
+    public string tileID;
+    public GameObject[] neighbours;
     // Start is called before the first frame update
     void Start()
     {
+        tileID = x +","+y;
         grid = GameObject.Find("Grid");
         map = grid.GetComponent<GridMap>();
+        neighbours = new GameObject[3] {
+            map.tileMap[x-1, y+1],
+            map.tileMap[x, y+1],
+            map.tileMap[x+1, y+1],
+
+            // map.tileMap[x-1, y],
+            // map.tileMap[x, y],
+            // map.tileMap[x+1, y],
+
+            // map.tileMap[x-1, y-1],
+            // map.tileMap[x, y-1],
+            // map.tileMap[x+1, y-1]
+        };
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(pheromoneLevel > 0)
+            pheromoneLevel -= 0.05f * Time.deltaTime;
     }
 
     public GameObject SelectNeighbour(int index) {
-        GameObject selected = map.tileMap[x, y];
-        if(index == 0) selected = map.tileMap[x-1, y+1];
-        if(index == 1) selected = map.tileMap[x, y+1];
-        if(index == 2) selected = map.tileMap[x+1, y+1];
-        if(index == 3) selected = map.tileMap[x-1, y];
-        if(index == 4) selected = map.tileMap[x+1, y];
-        if(index == 5) selected = map.tileMap[x-1, y-1];
-        if(index == 6) selected = map.tileMap[x, y-1];
-        if(index == 7) selected = map.tileMap[x+1, y-1];
 
+        GameObject selected = neighbours[index];
         if(selected.name == "Border(Clone)") selected = map.tileMap[x, y];
-       
         return selected;
     }   
 
-    private void OnMouseDown() {
-        Debug.Log(map.tileMap[x,y]);
+    public GameObject SelectNeighbourSmallestPheromone()
+    {
+        float pheromone = pheromoneLevel;
+        GameObject r = null;
+        foreach (var item in neighbours)
+        {
+            if(item.GetComponent<Tile>().pheromoneLevel <= pheromone && item.GetComponent<Tile>().pheromoneLevel != 0)
+            {
+                pheromone = item.GetComponent<Tile>().pheromoneLevel;
+                r = item;
+            }
+        }
+        Debug.Log(r);
+        return r;
     }
 
-    public void UpdatePheromoneLevel()
+    public GameObject SelectNeighbourLargestPheromone()
     {
+        float pheromone = pheromoneLevel;
+        GameObject r = null;
+        foreach (var item in neighbours)
+        {
+            if(item.GetComponent<Tile>().pheromoneLevel <= pheromone && item.GetComponent<Tile>().pheromoneLevel != 0)
+            {
+                pheromone = item.GetComponent<Tile>().pheromoneLevel;
+                r = item;
+            }
+        }
+        Debug.Log(r);
+        return r;
+    }
 
+    public void UpdatePheromoneLevel(float pheromoneStrength)
+    {
+        pheromoneLevel += pheromoneStrength;
     }
 }

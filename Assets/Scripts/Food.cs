@@ -14,7 +14,6 @@ public class Food : MonoBehaviour
         else
         {
             ant.gameObject.GetComponent<Ant>().UpdateAntToScavenger();
-            ant.gameObject.GetComponent<Ant>().NavigateBackToNest();
             health--;
         }
     }

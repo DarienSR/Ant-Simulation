@@ -9,7 +9,7 @@ public class GridMap : MonoBehaviour
     public GameObject grassPrefab;
     public GameObject antPrefab;
     public GameObject foodPrefab;
-
+    public GameObject nestPrefab;
 
     public int antSpawnSize = 1050;
 
@@ -28,6 +28,7 @@ public class GridMap : MonoBehaviour
         SpawnFood(78, 70);
         SpawnFood(30, 60);
         SpawnFood(10, 78);
+        SpawnNestNode(new Vector2(50, 36));
     }
 
     // Update is called once per frame
@@ -84,5 +85,12 @@ public class GridMap : MonoBehaviour
                 foodGO.transform.position = new Vector2(x+i, y+j);
             }
         }
+    }
+
+    private void SpawnNestNode(Vector2 pos)
+    {
+        GameObject nestNode = (GameObject)Instantiate(nestPrefab);
+        nestNode.transform.SetParent(GameObject.Find("Nest").transform); // organize all ants under the colony GameObject
+        nestNode.transform.position = pos;
     }
 }

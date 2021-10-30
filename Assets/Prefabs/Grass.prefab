@@ -96,3 +96,5 @@ MonoBehaviour:
   grid: {fileID: 4147719371422676757, guid: cb0ba7ad0f90cfe4ab8dd9b1992f7a96, type: 3}
   x: 0
   y: 0
+  pheromoneLevel: 0
+  label: {fileID: 0}
