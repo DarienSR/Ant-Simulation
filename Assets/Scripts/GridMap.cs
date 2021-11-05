@@ -13,6 +13,7 @@ public class GridMap : MonoBehaviour
 
     public int antSpawnSize = 1050;
 
+    private Vector2 nestNode = new Vector2(50, 36);
     public GameObject[,] tileMap;
     int rows = 100;
     int cols = 100;
@@ -24,11 +25,12 @@ public class GridMap : MonoBehaviour
         yDivider = rows / 3;
         GenerateGrid();
         SpawnAnts();
-        SpawnFood(5, 50);
-        SpawnFood(78, 70);
-        SpawnFood(30, 60);
-        SpawnFood(10, 78);
-        SpawnNestNode(new Vector2(50, 36));
+        SpawnFood(0, 50);
+        SpawnFood(20, 50);
+        SpawnFood(40, 50);
+        SpawnFood(60, 50);
+        SpawnNestNode(nestNode);
+
     }
 
     // Update is called once per frame
@@ -67,7 +69,7 @@ public class GridMap : MonoBehaviour
         {
             GameObject antGO = (GameObject)Instantiate(antPrefab);
             antGO.transform.SetParent(GameObject.Find("Colony").transform); // organize all ants under the colony GameObject
-            antGO.transform.position = new Vector2(50, 36);
+            antGO.transform.position = nestNode; // spawn ants on nest node
             Ant ant = antGO.GetComponent<Ant>();
             ant.x = 50;
             ant.y = 36;

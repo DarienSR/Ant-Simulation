@@ -46,6 +46,6 @@ public class CameraMovement : MonoBehaviour
         if(Input.mouseScrollDelta.y < 0f ) // backwards
             camera.orthographicSize += 1; // zoom out
         if(camera.orthographicSize <= 10) camera.orthographicSize = 10;
-        if(camera.orthographicSize >= 54) camera.orthographicSize = 54;
+        if(camera.orthographicSize >= 70) camera.orthographicSize = 70;
     }
 }

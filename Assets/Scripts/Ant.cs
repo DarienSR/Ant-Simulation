@@ -12,7 +12,7 @@ public class Ant : MonoBehaviour
     private Color trailColor = Color.red;
     private float pheromoneStrength = 1f;
     bool headToNest = true;
-
+    public int index = -1;
     public List<GameObject> path = new List<GameObject>();
     public List<string> pathid = new List<string>();
     // Start is called before the first frame update
@@ -33,7 +33,7 @@ public class Ant : MonoBehaviour
     {
         GameObject currentTileGO = (GameObject)grid.tileMap[x, y];
         Tile currentTile = currentTileGO.GetComponent<Tile>();
-        if(antType == "Scout")
+        if(antType == "Scout" )
         {
             if(!pathid.Contains(currentTile.tileID))
             {
@@ -47,9 +47,6 @@ public class Ant : MonoBehaviour
 
     public void Move() 
     {
-        // TO DO: IF HEAD BACK TO NEST (AND NOT SCOUT): GO TO TILE WITH LEAST AMOUNT OF PHEROMONE (THAT ISNT 0)
-        // TO DO: IF HEADING FOR FOOD (AND NOT SCOUT): GO TO TILE WITH HIGHEST PHEROMONE LEVEL
-
         if(antType == "Scout")
         {
             SelectRandomTile();
@@ -59,21 +56,30 @@ public class Ant : MonoBehaviour
             if(headToNest)
             {
                 // work backwards from the path.
-                GameObject lastVisitedTile = path[path.Count - 1];
-                lastVisitedTile.GetComponent<Tile>().UpdatePheromoneLevel(pheromoneStrength - 1); // only add pheromone once per ant, per tile
+                Debug.Log(path.Count + " go to nest");
+                GameObject lastVisitedTile = path[index];
+                lastVisitedTile.GetComponent<Tile>().UpdatePheromoneLevel(pheromoneStrength + path.Count); // only add pheromone once per ant, per tile
                 MoveAnt(lastVisitedTile);
-                path.RemoveAt(path.Count - 1);
-             
+                index--;             
             } else
-            {
-               Debug.Log("ANOTHER TRIP");
-
+            { // have returned from food source to nest
+                Debug.Log(path.Count + " search for food");
+                if(index < path.Count - 1) 
+                {
+                    GameObject lastVisitedTile = path[index];
+                    lastVisitedTile.GetComponent<Tile>().UpdatePheromoneLevel(pheromoneStrength + path.Count); // only add pheromone once per ant, per tile
+                    MoveAnt(lastVisitedTile);
+                        index++;
+                } 
+                else 
+                {
+                    Debug.Log("Looking for more food");
+                    SelectRandomTile(); // previous food source is gone, find more.
+                }
             }
         }
 
     }
-
-
 
     private void SelectRandomTile()
     {
@@ -82,10 +88,10 @@ public class Ant : MonoBehaviour
         
         Tile currentTile = currentTileGO.GetComponent<Tile>();
         // Determine where to move
-        int selectedTileIndex = Random.Range(0, 9);
-
+        int selectedTileIndex = Random.Range(0, 5);
         // Get that tiles position
         GameObject selectedTile = currentTile.SelectNeighbour(selectedTileIndex);
+        if(selectedTile == currentTileGO) return; 
         MoveAnt(selectedTile);
 
     }
@@ -101,6 +107,7 @@ public class Ant : MonoBehaviour
 
     public void UpdateAntToScavenger()
     {
+        index = path.Count - 1;
         // Update antType
         antType = "Scavenger";
         // Update trail color
@@ -111,11 +118,11 @@ public class Ant : MonoBehaviour
 
     public void UpdateAntToGatherer()
     {
+        index = 0;
         // Update antType
         antType = "Gatherer";
         // Update trail color
         trailColor = Color.yellow;
         headToNest = false;
-        pheromoneStrength = path.Count;
     }
 }

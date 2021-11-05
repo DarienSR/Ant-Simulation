@@ -4,17 +4,13 @@ using UnityEngine;
 
 public class Food : MonoBehaviour
 {
-    int health = 5;
+    int health = 1;
 
-    // called when the cube hits the floor
     void OnTriggerEnter2D(Collider2D ant)
     {
+        ant.gameObject.GetComponent<Ant>().UpdateAntToScavenger();
+        health--;
         if(health <= 0)
             Destroy(gameObject);
-        else
-        {
-            ant.gameObject.GetComponent<Ant>().UpdateAntToScavenger();
-            health--;
-        }
     }
 }
