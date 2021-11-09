@@ -9,12 +9,18 @@ public class Tile : MonoBehaviour
     public int x;
     public int y;
 
-    public float pheromoneLevel = 0;
+    private SpriteRenderer spriteR;
+    private SpriteRenderer originalSpriteR;
+    float decreaseColorValue = 10f;
+    float increaseColorValue = 2f;
+
     public string tileID;
     public GameObject[] neighbours;
     // Start is called before the first frame update
     void Start()
     {
+        spriteR = gameObject.GetComponent<SpriteRenderer>();
+        originalSpriteR = gameObject.GetComponent<SpriteRenderer>();
         tileID = x +","+y;
         grid = GameObject.Find("Grid");
         map = grid.GetComponent<GridMap>();
@@ -23,8 +29,7 @@ public class Tile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(pheromoneLevel > 0)
-            pheromoneLevel -= 0.05f * Time.deltaTime;
+        FadeColor();
     }
 
     private GameObject[] getNeighbours()
@@ -52,50 +57,14 @@ public class Tile : MonoBehaviour
         return selected;
     }   
 
-    public GameObject SelectNeighbourLargestPheromone()
+    private void FadeColor()
     {
-        GameObject[] neighbours = getNeighbours();
-        float pheromone = neighbours[0].GetComponent<Tile>().pheromoneLevel;
-        GameObject r = neighbours[0];
-        foreach (var item in neighbours)
-        {
-            if(item.GetComponent<Tile>().pheromoneLevel >= pheromone && item.GetComponent<Tile>().pheromoneLevel != 0)
-            {
-                pheromone = item.GetComponent<Tile>().pheromoneLevel;
-                r = item;
-            }
-            else
-            {
-                r = neighbours[Random.Range(0, neighbours.Length)];
-            }
-        }
-        Debug.Log(r);
-        return r;
+        if(spriteR.color.g < 194)
+            spriteR.color = new Color(spriteR.color.r, spriteR.color.g + 0.1f * Time.deltaTime, spriteR.color.b + 0.1f * Time.deltaTime);
     }
 
-    public GameObject SelectNeighbourSmallestPheromone()
+    public void AddColor()
     {
-        GameObject[] neighbours = getNeighbours();
-        float pheromone = neighbours[0].GetComponent<Tile>().pheromoneLevel;
-        GameObject r = neighbours[0];
-        foreach (var item in neighbours)
-        {
-            if(item.GetComponent<Tile>().pheromoneLevel <= pheromone && item.GetComponent<Tile>().pheromoneLevel != 0)
-            {
-                pheromone = item.GetComponent<Tile>().pheromoneLevel;
-                r = item;
-            }
-            else
-            {
-                r = neighbours[Random.Range(0, neighbours.Length)];
-            }
-        }
-        Debug.Log(r);
-        return r;
-    }
-
-    public void UpdatePheromoneLevel(float pheromoneStrength)
-    {
-        pheromoneLevel += pheromoneStrength;
+        spriteR.color = new Color(spriteR.color.r, spriteR.color.g - 2f * Time.deltaTime, spriteR.color.b -2f * Time.deltaTime);
     }
 }
