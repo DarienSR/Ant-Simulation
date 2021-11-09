@@ -14,6 +14,8 @@ public class Tile : MonoBehaviour
     float decreaseColorValue = 10f;
     float increaseColorValue = 2f;
 
+    public bool hasFood;
+
     public string tileID;
     public GameObject[] neighbours;
     // Start is called before the first frame update
@@ -57,14 +59,24 @@ public class Tile : MonoBehaviour
         return selected;
     }   
 
+    public GameObject CheckIfNeighboursHaveFood()
+    {
+		GameObject[] neighbours = getNeighbours();
+		foreach (GameObject tile in neighbours)
+		{
+			if(tile.GetComponent<Tile>().hasFood == true) return tile;
+		}
+		return null;
+    }
+
     private void FadeColor()
     {
         if(spriteR.color.g < 194)
-            spriteR.color = new Color(spriteR.color.r, spriteR.color.g + 0.1f * Time.deltaTime, spriteR.color.b + 0.1f * Time.deltaTime);
+            spriteR.color = new Color(spriteR.color.r, spriteR.color.g + 0.2f * Time.deltaTime, spriteR.color.b + 0.2f * Time.deltaTime);
     }
 
     public void AddColor()
     {
-        spriteR.color = new Color(spriteR.color.r, spriteR.color.g - 2f * Time.deltaTime, spriteR.color.b -2f * Time.deltaTime);
+        spriteR.color = new Color(spriteR.color.r, spriteR.color.g - 1f * Time.deltaTime, spriteR.color.b -1f * Time.deltaTime);
     }
 }

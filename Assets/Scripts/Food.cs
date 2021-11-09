@@ -8,10 +8,14 @@ public class Food : MonoBehaviour
   private void OnTriggerEnter2D(Collider2D ant) 
   {
     health--;
+    Ant antObj = ant.gameObject.GetComponent<Ant>();
     if(health <= 0)
-        Destroy(gameObject);
-    ant.gameObject.GetComponent<Ant>().UpdateState(Ant.State.SUCCESS, true);
-    ant.gameObject.GetComponent<Ant>().SetIndex();
+    {
+      Destroy(gameObject); // destory food source
+      antObj.grid.tileMap[antObj.x, antObj.y].GetComponent<Tile>().hasFood = false;
+    }
+    antObj.UpdateState(Ant.State.SUCCESS, true);
+    antObj.SetIndex();
   }
 }
 

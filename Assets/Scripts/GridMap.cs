@@ -85,6 +85,7 @@ public class GridMap : MonoBehaviour
                 GameObject foodGO = (GameObject)Instantiate(foodPrefab);
                 foodGO.transform.SetParent(GameObject.Find("FoodSource").transform); // organize all ants under the colony GameObject
                 foodGO.transform.position = new Vector2(x+i, y+j);
+                tileMap[x+i, y+j].GetComponent<Tile>().hasFood = true;
             }
         }
     }

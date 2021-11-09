@@ -76,13 +76,13 @@ public class Ant : MonoBehaviour
                 if(!hasFood && index < path.Count - 1)
                 {
                     HeadBackToFoodSource();
+                    return;
                 }
                 else 
                 {
                     // Search for more food, once you have reached the foodsource
                     SearchForNeighbouringFood();
                 }
-               
             }
         }
     }
@@ -101,9 +101,22 @@ public class Ant : MonoBehaviour
         MoveAnt(selectedTile);
         AddToPath(selectedTile);
     }
+    
     // Should look to see if tiles contain food source, if so move to it. if not, perform a random walk.
     private void SearchForNeighbouringFood()
     {
+        // Get Current Grid Tile
+        GameObject currentTileGO = (GameObject)grid.tileMap[x, y];
+        Tile currentTile = currentTileGO.GetComponent<Tile>();
+
+        GameObject selectedTile = currentTile.CheckIfNeighboursHaveFood();
+        if(selectedTile != null) // if we find a neighbouring tile with food
+        {
+            // move to selected tile
+            MoveAnt(selectedTile);
+            return;
+        }
+        // none the neighbouring tiles have food. So just walk randomly until you find some
         RandomWalk();
     }
 
