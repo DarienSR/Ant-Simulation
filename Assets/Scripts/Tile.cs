@@ -92,12 +92,12 @@ public class Tile : MonoBehaviour
     private void FadeColor()
     {
         if(spriteR.color.g < 194)
-            spriteR.color = new Color(spriteR.color.r, spriteR.color.g + 0.2f * Time.deltaTime, spriteR.color.b + 0.2f * Time.deltaTime);
+            spriteR.color = new Color(spriteR.color.r, spriteR.color.g + 0.02f, spriteR.color.b + 0.02f);
     }
 
     public void AddColor()
     {
-        spriteR.color = new Color(spriteR.color.r, spriteR.color.g - 0.5f * Time.deltaTime, spriteR.color.b -0.5f * Time.deltaTime);
+        spriteR.color = new Color(spriteR.color.r, (spriteR.color.g * 0.09f), spriteR.color.b  * 0.09f);
     }
 
     public void UpdatePheromone()
