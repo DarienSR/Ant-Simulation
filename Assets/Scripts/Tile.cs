@@ -35,7 +35,7 @@ public class Tile : MonoBehaviour
         FadeColor();
         if(pheromone > 0)
         {
-            pheromone -= 1f * Time.deltaTime;
+            pheromone -= 1f;
             if(pheromone < 0) pheromone = 0;
         }
     }
@@ -75,7 +75,7 @@ public class Tile : MonoBehaviour
     public GameObject SelectNeighbour(int index) {
         GameObject[] neighbours = getNeighbours();
         GameObject selected = neighbours[index];
-        if(selected.name == "Border(Clone)") selected = map.tileMap[x+1, y-1];
+        if(selected.name == "Border(Clone)") selected = map.tileMap[x, y];
         return selected;
     }   
 
@@ -102,6 +102,6 @@ public class Tile : MonoBehaviour
 
     public void UpdatePheromone()
     {
-        pheromone += 5f * Time.deltaTime;
+        pheromone += 5f;
     }
 }

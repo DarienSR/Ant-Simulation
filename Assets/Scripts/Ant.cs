@@ -27,7 +27,6 @@ public class Ant : MonoBehaviour
     public int index = -1; // path index. Contains the current tile the ant is on
 
     public List<GameObject> path = new List<GameObject>(); // holds all the path information (tiles)
-    public List<string> pathid = new List<string>(); 
 
 
     // Set all the default values of the ant.
@@ -51,7 +50,7 @@ public class Ant : MonoBehaviour
         else if(state == State.SUCCESS)
             gameObject.GetComponent<SpriteRenderer>().color = Color.green;
         else if(state == State.FOLLOW_SUCCESS)
-            gameObject.GetComponent<SpriteRenderer>().color = Color.black;
+            gameObject.GetComponent<SpriteRenderer>().color = Color.magenta;
         else if(state == State.FAIL)
             gameObject.GetComponent<SpriteRenderer>().color = Color.red;
     }
@@ -66,7 +65,7 @@ public class Ant : MonoBehaviour
         {
             RandomWalk();
         }
-        else if(state == State.SUCCESS) // ant has found food
+        else if(state == State.SUCCESS || state == State.FOLLOW_SUCCESS) // ant has found food
         {
             if(index != 0 && hasFood) // if you have not reached the nest
             {
@@ -98,15 +97,10 @@ public class Ant : MonoBehaviour
             }
             else
             {
-                // reached nest.
                 path.Clear();
-                index = -1;
-                UpdateState(State.FOLLOW_SUCCESS, false);
+                index = 0;
+                UpdateState(State.SEARCHING, false);
             }
-        }
-        else if(state == State.FOLLOW_SUCCESS)
-        {
-            Debug.Log("Start from fresh. Follow trails.");
         }
     }
 
@@ -141,6 +135,7 @@ public class Ant : MonoBehaviour
         {
             // move to selected tile
             MoveAnt(selectedTile);
+            AddToPath(selectedTile);
             return;
         }
         // none of the neighbouring tiles have food. So just walk randomly until you find some
@@ -150,10 +145,10 @@ public class Ant : MonoBehaviour
 
     private void HeadBackToNest()
     {
+        index--;
         GameObject lastVistedTile = path[index]; 
         MoveAnt(lastVistedTile);
         if(state == State.SUCCESS) lastVistedTile.GetComponent<Tile>().UpdatePheromone();
-        index--;
     }
 
     private void HeadBackToFoodSource()
@@ -173,6 +168,7 @@ public class Ant : MonoBehaviour
     private void AddToPath(GameObject tile)
     {
         path.Add(tile);
+        index++;
     }
 
     // update ant's positioning to the selectedTile
@@ -184,7 +180,7 @@ public class Ant : MonoBehaviour
         // Set position to that tile
         gameObject.transform.position = newPos;
         selectedTile.GetComponent<Tile>().AddColor();
-        if(state == State.SEARCHING || state == State.FOLLOW_SUCCESS)
+        if(state == State.SEARCHING)
         {
             AddToPath(selectedTile);
         }
