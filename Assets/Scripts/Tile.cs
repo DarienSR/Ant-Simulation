@@ -10,9 +10,11 @@ public class Tile : MonoBehaviour
     public int y;
 
     private SpriteRenderer spriteR;
-    private SpriteRenderer originalSpriteR;
+
     float decreaseColorValue = 10f;
     float increaseColorValue = 2f;
+
+    public float pheromone = 0f;
 
     public bool hasFood;
 
@@ -22,7 +24,6 @@ public class Tile : MonoBehaviour
     void Start()
     {
         spriteR = gameObject.GetComponent<SpriteRenderer>();
-        originalSpriteR = gameObject.GetComponent<SpriteRenderer>();
         tileID = x +","+y;
         grid = GameObject.Find("Grid");
         map = grid.GetComponent<GridMap>();
@@ -32,6 +33,11 @@ public class Tile : MonoBehaviour
     void Update()
     {
         FadeColor();
+        if(pheromone > 0)
+        {
+            pheromone -= 1f * Time.deltaTime;
+            if(pheromone < 0) pheromone = 0;
+        }
     }
 
     private GameObject[] getNeighbours()
@@ -52,10 +58,24 @@ public class Tile : MonoBehaviour
 
     }
 
+    public GameObject SelectFailNeighbours(int index)
+    {
+        GameObject[] neighbours = new GameObject[] {
+            map.tileMap[x-1, y],
+            map.tileMap[x+1, y],
+            map.tileMap[x-1, y-1],
+            map.tileMap[x, y-1],
+            map.tileMap[x+1, y-1]
+        };
+        GameObject selected = neighbours[index];
+        if(selected.name == "Border(Clone)") selected = null;
+        return selected;
+    }
+
     public GameObject SelectNeighbour(int index) {
         GameObject[] neighbours = getNeighbours();
         GameObject selected = neighbours[index];
-        if(selected.name == "Border(Clone)") selected = map.tileMap[x, y];
+        if(selected.name == "Border(Clone)") selected = map.tileMap[x+1, y-1];
         return selected;
     }   
 
@@ -77,6 +97,11 @@ public class Tile : MonoBehaviour
 
     public void AddColor()
     {
-        spriteR.color = new Color(spriteR.color.r, spriteR.color.g - 1f * Time.deltaTime, spriteR.color.b -1f * Time.deltaTime);
+        spriteR.color = new Color(spriteR.color.r, spriteR.color.g - 0.5f * Time.deltaTime, spriteR.color.b -0.5f * Time.deltaTime);
+    }
+
+    public void UpdatePheromone()
+    {
+        pheromone += 5f * Time.deltaTime;
     }
 }

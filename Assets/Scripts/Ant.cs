@@ -12,6 +12,8 @@ public class Ant : MonoBehaviour
         FOLLOW_SUCCESS, // After an ant has failed its inital search of food and is now following the path of a successful ant (if there are any avaiable)
     }
 
+    private int failCap = 175;
+
     // This boolean value is used in conjunction with the SUCCESS state.
     bool hasFood = false; // indicates whether or not the ant is carrying food. If it is (true), it is heading back to the nest, if it is not (false) then it is coming from the nest after a sucessful trip. 
 
@@ -45,7 +47,7 @@ public class Ant : MonoBehaviour
     private void AssignAntColor(State state)
     {
         if(state == State.SEARCHING)
-            gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+            gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
         else if(state == State.SUCCESS)
             gameObject.GetComponent<SpriteRenderer>().color = Color.green;
         else if(state == State.FOLLOW_SUCCESS)
@@ -56,7 +58,9 @@ public class Ant : MonoBehaviour
 
     // Movement logic based on ant state
     private void Move()
-    {
+    {   
+        CheckIfFailed();
+
         // When searching choose a random tile and add it to the path. 
         if(state == State.SEARCHING)
         {
@@ -85,6 +89,30 @@ public class Ant : MonoBehaviour
                 }
             }
         }
+        else if(state == State.FAIL)
+        {
+            // head back to the nest
+            if(index != 0)
+            {
+                HeadBackToNest();
+            }
+            else
+            {
+                // reached nest.
+                path.Clear();
+                index = -1;
+                UpdateState(State.FOLLOW_SUCCESS, false);
+            }
+        }
+        else if(state == State.FOLLOW_SUCCESS)
+        {
+            Debug.Log("Start from fresh. Follow trails.");
+        }
+    }
+
+    private void CheckIfFailed()
+    {
+        if(path.Count >= failCap) UpdateState(State.FAIL, false);
     }
 
     private void RandomWalk()
@@ -99,7 +127,6 @@ public class Ant : MonoBehaviour
         GameObject selectedTile = currentTile.SelectNeighbour(selectedTileIndex);
         if(selectedTile == currentTileGO) return; 
         MoveAnt(selectedTile);
-        AddToPath(selectedTile);
     }
     
     // Should look to see if tiles contain food source, if so move to it. if not, perform a random walk.
@@ -116,7 +143,8 @@ public class Ant : MonoBehaviour
             MoveAnt(selectedTile);
             return;
         }
-        // none the neighbouring tiles have food. So just walk randomly until you find some
+        // none of the neighbouring tiles have food. So just walk randomly until you find some
+        UpdateState(State.SEARCHING, false);
         RandomWalk();
     }
 
@@ -124,6 +152,7 @@ public class Ant : MonoBehaviour
     {
         GameObject lastVistedTile = path[index]; 
         MoveAnt(lastVistedTile);
+        if(state == State.SUCCESS) lastVistedTile.GetComponent<Tile>().UpdatePheromone();
         index--;
     }
 
@@ -132,7 +161,6 @@ public class Ant : MonoBehaviour
         index++;
         GameObject lastVistedTile = path[index]; 
         MoveAnt(lastVistedTile);
-
     }
 
     public void SetIndex()
@@ -156,11 +184,16 @@ public class Ant : MonoBehaviour
         // Set position to that tile
         gameObject.transform.position = newPos;
         selectedTile.GetComponent<Tile>().AddColor();
+        if(state == State.SEARCHING || state == State.FOLLOW_SUCCESS)
+        {
+            AddToPath(selectedTile);
+        }
     }
 
     public void UpdateState(State newState, bool carryingFood)
     {
         state = newState;
         hasFood = carryingFood;
+        AssignAntColor(state);
     }
 }
