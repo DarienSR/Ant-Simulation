@@ -13,24 +13,21 @@ public class GridMap : MonoBehaviour
 
     public int antSpawnSize = 1050;
 
-    private Vector2 nestNode = new Vector2(50, 36);
+    private Vector2 nestNode = new Vector2(50, 2);
     public GameObject[,] tileMap;
     public Ant[] ants;
     int rows = 100;
     int cols = 100;
-    int yDivider;
     // Start is called before the first frame update
     void Start()
     {
         tileMap = new GameObject[rows, cols];
-        yDivider = rows / 3;
         ants = new Ant[antSpawnSize];
         GenerateGrid();
         SpawnAnts();
         SpawnFood(3, 50);
         SpawnFood(20, 50);
-        SpawnFood(40, 50);
-        SpawnFood(60, 50);
+        SpawnFood(60, 30);
         SpawnNestNode(nestNode);
     }
 
@@ -53,14 +50,8 @@ public class GridMap : MonoBehaviour
 
     private GameObject SelectTilePrefab(int i, int j) 
     {
-        if(i == rows / 2 && j == yDivider+1) // nest opening
-            return (GameObject)Instantiate(grassPrefab); 
-        else if(i == 0 || j == 0 || i == cols - 1 || j == rows - 1) // border around grid
+        if(i == 0 || j == 0 || i == cols - 1 || j == rows - 1) // border around grid
             return (GameObject)Instantiate(borderPrefab); 
-        else if(j <= yDivider) // dirt below division point
-            return (GameObject)Instantiate(dirtPrefab);
-        else if(j <= yDivider + 1) // border between above/below ground
-            return (GameObject)Instantiate(borderPrefab);
         else // default is grass
             return (GameObject)Instantiate(grassPrefab); 
     }
@@ -81,9 +72,9 @@ public class GridMap : MonoBehaviour
 
     private void SpawnFood(int x, int y)
     {
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < 15; i++)
         {
-            for(int j = 0; j < 5; j++)
+            for(int j = 0; j < 15; j++)
             {
                 GameObject foodGO = (GameObject)Instantiate(foodPrefab);
                 foodGO.transform.SetParent(GameObject.Find("FoodSource").transform); // organize all ants under the colony GameObject

@@ -12,7 +12,7 @@ public class Ant : MonoBehaviour
         FOLLOW_SUCCESS, // After an ant has failed its inital search of food and is now following the path of a successful ant (if there are any avaiable)
     }
 
-    private int failCap = 175;
+    private int failCap = 225;
     public int searchRadius = 2;
     // This boolean value is used in conjunction with the SUCCESS state.
     bool hasFood = false; // indicates whether or not the ant is carrying food. If it is (true), it is heading back to the nest, if it is not (false) then it is coming from the nest after a sucessful trip. 
@@ -68,7 +68,7 @@ public class Ant : MonoBehaviour
 
             
         }
-        else if(state == State.SUCCESS) // ant has found food
+        else if(state == State.SUCCESS || state == State.FOLLOW_SUCCESS) // ant has found food
         {
             if(index != 0 && hasFood) // if you have not reached the nest
             {
@@ -102,6 +102,22 @@ public class Ant : MonoBehaviour
             {
                 path.Clear();
                 index = 0;
+                List<GameObject> temp = new List<GameObject>();
+                foreach (Ant ant in grid.ants)
+                {
+                    if(ant.state == State.SUCCESS)
+                    {
+                        if(temp.Count == 0) temp = ant.path;
+                        if(ant.path.Count < temp.Count) temp = ant.path;
+                    }
+                }
+                if(temp.Count != 0) // if we find a successful path
+                { 
+                    path = temp;
+                    UpdateState(State.FOLLOW_SUCCESS, false);
+                    return;
+                }
+                // no path find, just random walk again
                 UpdateState(State.SEARCHING, false);
             }
         }
@@ -200,7 +216,6 @@ public class Ant : MonoBehaviour
 
     public void UpdateState(State newState, bool carryingFood)
     {
-        if(newState == State.FAIL) searchRadius++;
         state = newState;
         hasFood = carryingFood;
         AssignAntColor(state);

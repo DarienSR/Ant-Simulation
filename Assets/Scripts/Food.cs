@@ -15,7 +15,7 @@ public class Food : MonoBehaviour
       antObj.grid.tileMap[antObj.x, antObj.y].GetComponent<Tile>().hasFood = false;
     }
 
-    antObj.UpdateState(Ant.State.SUCCESS, true); // reached food without touching a border edge
+    antObj.UpdateState(Ant.State.SUCCESS, true); 
     antObj.SetIndex();
   }
 }

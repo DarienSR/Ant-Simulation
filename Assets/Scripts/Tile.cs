@@ -82,7 +82,7 @@ public class Tile : MonoBehaviour
             } 
             catch(ArgumentOutOfRangeException e)
             {
-
+                
             }
         }
         neighbours = list.ToArray();
