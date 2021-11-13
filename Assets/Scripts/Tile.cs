@@ -36,7 +36,7 @@ public class Tile : MonoBehaviour
         FadeColor();
     }
 
-    private GameObject[] getNeighbours()
+    private GameObject[] getNeighboursWithinMovement()
     {
         return neighbours = new GameObject[] {
             map.tileMap[x-1, y+1],
@@ -57,13 +57,13 @@ public class Tile : MonoBehaviour
 
 
     public GameObject SelectNeighbour(int index) {
-        GameObject[] neighbours = getNeighbours();
+        GameObject[] neighbours = getNeighboursWithinMovement();
         GameObject selected = neighbours[index];
         if(selected.name == "Border(Clone)") selected = null;
         return selected;
     }   
 
-    private GameObject[] getNeighboursWithFood(int radius)
+    private GameObject[] getAllNeighbours(int radius)
     {
         neighbours = new GameObject[8*radius];
         List<GameObject> list = new List<GameObject>();
@@ -82,7 +82,7 @@ public class Tile : MonoBehaviour
             } 
             catch(ArgumentOutOfRangeException e)
             {
-                
+
             }
         }
         neighbours = list.ToArray();
@@ -91,11 +91,18 @@ public class Tile : MonoBehaviour
 
     public GameObject CheckIfNeighboursHaveFood(int radius)
     {
-		GameObject[] neighbours = getNeighboursWithFood(radius);
+		GameObject[] neighbours = getAllNeighbours(radius);
+        int i = 0;
+        List<GameObject> withFood = new List<GameObject>();
 		foreach (GameObject tile in neighbours)
 		{
-			if(tile.GetComponent<Tile>().hasFood == true) return tile;
+			if(tile.GetComponent<Tile>().hasFood == true) withFood.Add(tile);
 		}
+        if(withFood.Count != 0)
+        {
+            int select = UnityEngine.Random.Range(0, withFood.Count);
+            return withFood.ToArray()[select];
+        }
 		return null;
     }
 

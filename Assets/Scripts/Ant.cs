@@ -113,7 +113,10 @@ public class Ant : MonoBehaviour
                 }
                 if(temp.Count != 0) // if we find a successful path
                 { 
-                    path = temp;
+                    foreach(GameObject tile in temp)
+                    {
+                        path.Add(tile);
+                    }
                     UpdateState(State.FOLLOW_SUCCESS, false);
                     return;
                 }
@@ -183,7 +186,19 @@ public class Ant : MonoBehaviour
     {
         index++;
         GameObject lastVistedTile = path[index]; 
-        MoveAnt(lastVistedTile);
+        Tile tile = lastVistedTile.GetComponent<Tile>();
+        
+        GameObject cutPathShort = tile.CheckIfNeighboursHaveFood(searchRadius);
+        // we have encountered food before reaching our previous end tile 
+        if(cutPathShort != null) 
+        {
+            Debug.Log(path.Count);
+            path.RemoveRange(index+1, path.Count - (index+1));
+            Debug.Log("Optimized " + path.Count);
+            MoveAnt(cutPathShort);
+        } 
+        else
+            MoveAnt(lastVistedTile);
     }
 
     public void SetIndex()

@@ -12,9 +12,9 @@ public class Food : MonoBehaviour
     if(health <= 0)
     {
       Destroy(gameObject); // destory food source
-      antObj.grid.tileMap[antObj.x, antObj.y].GetComponent<Tile>().hasFood = false;
     }
 
+    antObj.grid.tileMap[antObj.x, antObj.y].GetComponent<Tile>().hasFood = false;
     antObj.UpdateState(Ant.State.SUCCESS, true); 
     antObj.SetIndex();
   }

@@ -27,7 +27,7 @@ public class GridMap : MonoBehaviour
         SpawnAnts();
         SpawnFood(3, 50);
         SpawnFood(20, 50);
-        SpawnFood(60, 30);
+        SpawnFood(50, 30);
         SpawnNestNode(nestNode);
     }
 
