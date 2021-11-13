@@ -33,11 +33,6 @@ public class Tile : MonoBehaviour
     void Update()
     {
         FadeColor();
-        if(pheromone > 0)
-        {
-            pheromone -= 1f;
-            if(pheromone < 0) pheromone = 0;
-        }
     }
 
     private GameObject[] getNeighbours()
@@ -51,9 +46,9 @@ public class Tile : MonoBehaviour
             // map.tileMap[x, y],
             map.tileMap[x+1, y],
 
-            // map.tileMap[x-1, y-1],
+             //map.tileMap[x-1, y-1],
             // map.tileMap[x, y-1],
-            // map.tileMap[x+1, y-1]
+            //map.tileMap[x+1, y-1]
         };
 
     }
@@ -62,20 +57,22 @@ public class Tile : MonoBehaviour
     {
         GameObject[] neighbours = new GameObject[] {
             map.tileMap[x-1, y],
+            // map.tileMap[x, y],
             map.tileMap[x+1, y],
-            map.tileMap[x-1, y-1],
-            map.tileMap[x, y-1],
-            map.tileMap[x+1, y-1]
+
+             map.tileMap[x-1, y-1],
+             map.tileMap[x, y-1],
+             map.tileMap[x+1, y-1]
         };
         GameObject selected = neighbours[index];
-        if(selected.name == "Border(Clone)") selected = null;
+        if(selected.name == "Border(Clone)") selected = map.tileMap[x, y];
         return selected;
     }
 
     public GameObject SelectNeighbour(int index) {
         GameObject[] neighbours = getNeighbours();
         GameObject selected = neighbours[index];
-        if(selected.name == "Border(Clone)") selected = map.tileMap[x, y];
+        if(selected.name == "Border(Clone)") selected = null;
         return selected;
     }   
 
@@ -92,7 +89,7 @@ public class Tile : MonoBehaviour
     private void FadeColor()
     {
         if(spriteR.color.g < 194)
-            spriteR.color = new Color(spriteR.color.r, spriteR.color.g + 0.02f, spriteR.color.b + 0.02f);
+            spriteR.color = new Color(spriteR.color.r, spriteR.color.g + 0.03f, spriteR.color.b + 0.03f);
     }
 
     public void AddColor()
@@ -102,6 +99,6 @@ public class Tile : MonoBehaviour
 
     public void UpdatePheromone()
     {
-        pheromone += 5f;
+        pheromone += (0.9f * Time.deltaTime) + 1;
     }
 }

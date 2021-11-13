@@ -27,7 +27,7 @@ public class GridMap : MonoBehaviour
         ants = new Ant[antSpawnSize];
         GenerateGrid();
         SpawnAnts();
-        SpawnFood(0, 50);
+        SpawnFood(3, 50);
         SpawnFood(20, 50);
         SpawnFood(40, 50);
         SpawnFood(60, 50);
@@ -81,9 +81,9 @@ public class GridMap : MonoBehaviour
 
     private void SpawnFood(int x, int y)
     {
-        for(int i = 0; i < 20; i++)
+        for(int i = 0; i < 5; i++)
         {
-            for(int j = 0; j < 20; j++)
+            for(int j = 0; j < 5; j++)
             {
                 GameObject foodGO = (GameObject)Instantiate(foodPrefab);
                 foodGO.transform.SetParent(GameObject.Find("FoodSource").transform); // organize all ants under the colony GameObject

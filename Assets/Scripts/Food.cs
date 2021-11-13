@@ -14,7 +14,8 @@ public class Food : MonoBehaviour
       Destroy(gameObject); // destory food source
       antObj.grid.tileMap[antObj.x, antObj.y].GetComponent<Tile>().hasFood = false;
     }
-    antObj.UpdateState(Ant.State.SUCCESS, true);
+
+    antObj.UpdateState(Ant.State.SUCCESS, true); // reached food without touching a border edge
     antObj.SetIndex();
   }
 }

@@ -13,7 +13,7 @@ public class Ant : MonoBehaviour
     }
 
     private int failCap = 175;
-
+    public int failedCount = 0;
     // This boolean value is used in conjunction with the SUCCESS state.
     bool hasFood = false; // indicates whether or not the ant is carrying food. If it is (true), it is heading back to the nest, if it is not (false) then it is coming from the nest after a sucessful trip. 
 
@@ -63,9 +63,12 @@ public class Ant : MonoBehaviour
         // When searching choose a random tile and add it to the path. 
         if(state == State.SEARCHING)
         {
+          
             RandomWalk();
+
+            
         }
-        else if(state == State.SUCCESS || state == State.FOLLOW_SUCCESS) // ant has found food
+        else if(state == State.SUCCESS) // ant has found food
         {
             if(index != 0 && hasFood) // if you have not reached the nest
             {
@@ -109,6 +112,7 @@ public class Ant : MonoBehaviour
         if(path.Count >= failCap) UpdateState(State.FAIL, false);
     }
 
+    // Randomly select a neighbouring tile. Check if you have reached the border of the map.
     private void RandomWalk()
     {
         // Get Current Grid Tile
@@ -119,6 +123,14 @@ public class Ant : MonoBehaviour
         int selectedTileIndex = Random.Range(0, 5);
         // Get that tiles position
         GameObject selectedTile = currentTile.SelectNeighbour(selectedTileIndex);
+
+        // Check to see if the selected tile is a border
+        if(selectedTile == null)
+        {
+            selectedTile = currentTileGO;
+            HeadBackToNest();
+            UpdateState(State.FAIL, false);
+        }
         if(selectedTile == currentTileGO) return; 
         MoveAnt(selectedTile);
     }
@@ -188,6 +200,7 @@ public class Ant : MonoBehaviour
 
     public void UpdateState(State newState, bool carryingFood)
     {
+        if(newState == State.FAIL) failedCount++;
         state = newState;
         hasFood = carryingFood;
         AssignAntColor(state);
