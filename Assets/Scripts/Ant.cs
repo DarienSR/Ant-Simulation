@@ -192,13 +192,11 @@ public class Ant : MonoBehaviour
         // we have encountered food before reaching our previous end tile 
         if(cutPathShort != null) 
         {
-            Debug.Log(path.Count);
-            path.RemoveRange(index+1, path.Count - (index+1));
-            Debug.Log("Optimized " + path.Count);
+            path.RemoveRange(index+1, path.Count - (index+1)); // remove the further away tiles.
             MoveAnt(cutPathShort);
         } 
         else
-            MoveAnt(lastVistedTile);
+            MoveAnt(lastVistedTile); // no optimization found
     }
 
     public void SetIndex()

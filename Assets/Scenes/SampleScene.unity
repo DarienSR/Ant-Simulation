@@ -353,7 +353,7 @@ PrefabInstance:
     - target: {fileID: 4147719371422676756, guid: cb0ba7ad0f90cfe4ab8dd9b1992f7a96,
         type: 3}
       propertyPath: antSpawnSize
-      value: 1
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4147719371422676756, guid: cb0ba7ad0f90cfe4ab8dd9b1992f7a96,
         type: 3}

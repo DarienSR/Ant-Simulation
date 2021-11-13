@@ -98,6 +98,7 @@ public class Tile : MonoBehaviour
 		{
 			if(tile.GetComponent<Tile>().hasFood == true) withFood.Add(tile);
 		}
+
         if(withFood.Count != 0)
         {
             int select = UnityEngine.Random.Range(0, withFood.Count);
@@ -109,12 +110,12 @@ public class Tile : MonoBehaviour
     private void FadeColor()
     {
         if(spriteR.color.g < 194)
-            spriteR.color = new Color(spriteR.color.r, spriteR.color.g + 0.03f, spriteR.color.b + 0.03f);
+            spriteR.color = new Color(spriteR.color.r + 0.03f, spriteR.color.g + 0.03f, spriteR.color.b + 0.03f);
     }
 
     public void AddColor()
     {
-        spriteR.color = new Color(spriteR.color.r, (spriteR.color.g * 0.09f), spriteR.color.b  * 0.09f);
+        spriteR.color = new Color(spriteR.color.r * 0.05f, (spriteR.color.g * 0.05f), spriteR.color.b  * 0.05f);
     }
 
     public void UpdatePheromone()

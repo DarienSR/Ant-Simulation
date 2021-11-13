@@ -46,13 +46,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0ddd5c49273a8946876d9d77eeb99a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  searchRadius: 2
   state: 0
   grid: {fileID: 4147719371422676756, guid: cb0ba7ad0f90cfe4ab8dd9b1992f7a96, type: 3}
   x: 50
   y: 40
   index: -1
   path: []
-  pathid: []
 --- !u!114 &3273399907407674818
 MonoBehaviour:
   m_ObjectHideFlags: 0

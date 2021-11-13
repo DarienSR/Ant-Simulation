@@ -22,7 +22,7 @@ public class CameraMovement : MonoBehaviour
         }
         if(Input.GetKey("a"))
         {
-            if(camera.transform.position.x - 1 < 0) return;
+            if(camera.transform.position.x - 1 < 15) return;
             camera.transform.position = new Vector3(camera.transform.position.x - 1, camera.transform.position.y, camera.transform.position.z);
         }
 
@@ -33,7 +33,7 @@ public class CameraMovement : MonoBehaviour
         }
         if(Input.GetKey("d"))
         {
-            if(camera.transform.position.x + 1 > 100) return;
+            if(camera.transform.position.x + 1 > 75) return;
             camera.transform.position = new Vector3(camera.transform.position.x + 1, camera.transform.position.y, camera.transform.position.z);
         }
 
@@ -46,6 +46,6 @@ public class CameraMovement : MonoBehaviour
         if(Input.mouseScrollDelta.y < 0f ) // backwards
             camera.orthographicSize += 1; // zoom out
         if(camera.orthographicSize <= 10) camera.orthographicSize = 10;
-        if(camera.orthographicSize >= 70) camera.orthographicSize = 70;
+        if(camera.orthographicSize >= 150) camera.orthographicSize = 150;
     }
 }
