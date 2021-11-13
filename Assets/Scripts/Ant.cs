@@ -13,7 +13,7 @@ public class Ant : MonoBehaviour
     }
 
     private int failCap = 175;
-    public int failedCount = 0;
+    public int searchRadius = 2;
     // This boolean value is used in conjunction with the SUCCESS state.
     bool hasFood = false; // indicates whether or not the ant is carrying food. If it is (true), it is heading back to the nest, if it is not (false) then it is coming from the nest after a sucessful trip. 
 
@@ -142,7 +142,7 @@ public class Ant : MonoBehaviour
         GameObject currentTileGO = (GameObject)grid.tileMap[x, y];
         Tile currentTile = currentTileGO.GetComponent<Tile>();
 
-        GameObject selectedTile = currentTile.CheckIfNeighboursHaveFood();
+        GameObject selectedTile = currentTile.CheckIfNeighboursHaveFood(searchRadius);
         if(selectedTile != null) // if we find a neighbouring tile with food
         {
             // move to selected tile
@@ -200,7 +200,7 @@ public class Ant : MonoBehaviour
 
     public void UpdateState(State newState, bool carryingFood)
     {
-        if(newState == State.FAIL) failedCount++;
+        if(newState == State.FAIL) searchRadius++;
         state = newState;
         hasFood = carryingFood;
         AssignAntColor(state);

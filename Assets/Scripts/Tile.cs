@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 public class Tile : MonoBehaviour
 {
     public GameObject grid;
@@ -45,7 +46,8 @@ public class Tile : MonoBehaviour
             map.tileMap[x-1, y],
             // map.tileMap[x, y],
             map.tileMap[x+1, y],
-
+            map.tileMap[x+1, y],
+            map.tileMap[x-1, y],
              //map.tileMap[x-1, y-1],
             // map.tileMap[x, y-1],
             //map.tileMap[x+1, y-1]
@@ -53,21 +55,6 @@ public class Tile : MonoBehaviour
 
     }
 
-    public GameObject SelectFailNeighbours(int index)
-    {
-        GameObject[] neighbours = new GameObject[] {
-            map.tileMap[x-1, y],
-            // map.tileMap[x, y],
-            map.tileMap[x+1, y],
-
-             map.tileMap[x-1, y-1],
-             map.tileMap[x, y-1],
-             map.tileMap[x+1, y-1]
-        };
-        GameObject selected = neighbours[index];
-        if(selected.name == "Border(Clone)") selected = map.tileMap[x, y];
-        return selected;
-    }
 
     public GameObject SelectNeighbour(int index) {
         GameObject[] neighbours = getNeighbours();
@@ -76,9 +63,35 @@ public class Tile : MonoBehaviour
         return selected;
     }   
 
-    public GameObject CheckIfNeighboursHaveFood()
+    private GameObject[] getNeighboursWithFood(int radius)
     {
-		GameObject[] neighbours = getNeighbours();
+        neighbours = new GameObject[8*radius];
+        List<GameObject> list = new List<GameObject>();
+        for(int i = 0; i < radius; i++)
+        {
+            try
+            {
+                list.Add(map.tileMap[x-i, y+i]);
+                list.Add(map.tileMap[x, y+i]);
+                list.Add(map.tileMap[x+i, y+i]);
+                list.Add(map.tileMap[x-i, y]);
+                list.Add(map.tileMap[x+i, y]);
+                list.Add(map.tileMap[x-i, y-i]);
+                list.Add(map.tileMap[x, y-i]);
+                list.Add(map.tileMap[x+i, y-i]);
+            } 
+            catch(ArgumentOutOfRangeException e)
+            {
+
+            }
+        }
+        neighbours = list.ToArray();
+        return neighbours;
+    }
+
+    public GameObject CheckIfNeighboursHaveFood(int radius)
+    {
+		GameObject[] neighbours = getNeighboursWithFood(radius);
 		foreach (GameObject tile in neighbours)
 		{
 			if(tile.GetComponent<Tile>().hasFood == true) return tile;
