@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-        public Camera camera;
+    public Camera camera;
 
     // Update is called once per frame
     void Update()
@@ -46,6 +46,6 @@ public class CameraMovement : MonoBehaviour
         if(Input.mouseScrollDelta.y < 0f ) // backwards
             camera.orthographicSize += 1; // zoom out
         if(camera.orthographicSize <= 10) camera.orthographicSize = 10;
-        if(camera.orthographicSize >= 150) camera.orthographicSize = 150;
+        if(camera.orthographicSize >= 50) camera.orthographicSize = 50;
     }
 }

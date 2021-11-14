@@ -48,6 +48,7 @@ public class Tile : MonoBehaviour
             map.tileMap[x+1, y],
             map.tileMap[x+1, y],
             map.tileMap[x-1, y],
+            
              //map.tileMap[x-1, y-1],
             // map.tileMap[x, y-1],
             //map.tileMap[x+1, y-1]

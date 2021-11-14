@@ -63,10 +63,7 @@ public class Ant : MonoBehaviour
         // When searching choose a random tile and add it to the path. 
         if(state == State.SEARCHING)
         {
-          
             RandomWalk();
-
-            
         }
         else if(state == State.SUCCESS || state == State.FOLLOW_SUCCESS) // ant has found food
         {
@@ -139,7 +136,7 @@ public class Ant : MonoBehaviour
         
         Tile currentTile = currentTileGO.GetComponent<Tile>();
         // Determine where to move
-        int selectedTileIndex = Random.Range(0, 5);
+        int selectedTileIndex = Random.Range(0, 7);
         // Get that tiles position
         GameObject selectedTile = currentTile.SelectNeighbour(selectedTileIndex);
 
@@ -194,6 +191,7 @@ public class Ant : MonoBehaviour
         {
             path.RemoveRange(index+1, path.Count - (index+1)); // remove the further away tiles.
             MoveAnt(cutPathShort);
+            AddToPath(cutPathShort);
         } 
         else
             MoveAnt(lastVistedTile); // no optimization found
