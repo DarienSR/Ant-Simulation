@@ -6,6 +6,7 @@ using System;
 public class Tile : MonoBehaviour
 {
     public GameObject grid;
+    public GameObject UI;
     private GridMap map;
     public int x;
     public int y;
@@ -27,6 +28,7 @@ public class Tile : MonoBehaviour
         spriteR = gameObject.GetComponent<SpriteRenderer>();
         tileID = x +","+y;
         grid = GameObject.Find("Grid");
+        UI = GameObject.Find("UI");
         map = grid.GetComponent<GridMap>();
     }
 
@@ -38,27 +40,26 @@ public class Tile : MonoBehaviour
 
     private GameObject[] getNeighboursWithinMovement()
     {
-        return neighbours = new GameObject[] {
-            map.tileMap[x-1, y+1],
-            map.tileMap[x, y+1],
-            map.tileMap[x+1, y+1],
+        bool[] movementOptions = UI.GetComponent<UI>().GetControls();
+        List<GameObject> movement = new List<GameObject>();
+        if(movementOptions[0]) movement.Add(map.tileMap[x-1, y+1]);
+        if(movementOptions[1]) movement.Add(map.tileMap[x, y+1]);    
+        if(movementOptions[2]) movement.Add(map.tileMap[x+1, y+1]);
+        if(movementOptions[3]) movement.Add(map.tileMap[x-1, y]);  
+        if(movementOptions[4]) movement.Add(map.tileMap[x+1, y]);
+        if(movementOptions[5]) movement.Add(map.tileMap[x-1, y-1]);   
+        if(movementOptions[6]) movement.Add(map.tileMap[x, y-1]);
+        if(movementOptions[7]) movement.Add(map.tileMap[x+1, y-1]);  
 
-            map.tileMap[x-1, y],
-            // map.tileMap[x, y],
-            map.tileMap[x+1, y],
-            map.tileMap[x+1, y],
-            map.tileMap[x-1, y],
-            
-             //map.tileMap[x-1, y-1],
-            // map.tileMap[x, y-1],
-            //map.tileMap[x+1, y-1]
-        };
+        return movement.ToArray();
 
     }
 
 
-    public GameObject SelectNeighbour(int index) {
+    public GameObject SelectNeighbour(int index) 
+    {
         GameObject[] neighbours = getNeighboursWithinMovement();
+        if(neighbours.Length == 0) return map.tileMap[x, y];
         GameObject selected = neighbours[index];
         if(selected.name == "Border(Clone)") selected = null;
         return selected;

@@ -28,6 +28,7 @@ public class Ant : MonoBehaviour
 
     public List<GameObject> path = new List<GameObject>(); // holds all the path information (tiles)
 
+    private UI ui;
 
     // Set all the default values of the ant.
     void Start()
@@ -35,6 +36,7 @@ public class Ant : MonoBehaviour
         state = State.SEARCHING; // Set starting state of SEARCHING
         AssignAntColor(state); // assign ant color based on the state
         grid = GameObject.Find("Grid").GetComponent<GridMap>(); // reference the grid object
+        ui = GameObject.Find("UI").GetComponent<UI>();
     }
 
     void Update()
@@ -136,7 +138,7 @@ public class Ant : MonoBehaviour
         
         Tile currentTile = currentTileGO.GetComponent<Tile>();
         // Determine where to move
-        int selectedTileIndex = Random.Range(0, 7);
+        int selectedTileIndex = Random.Range(0, ui.GetNumOfMovementOptions());
         // Get that tiles position
         GameObject selectedTile = currentTile.SelectNeighbour(selectedTileIndex);
 
