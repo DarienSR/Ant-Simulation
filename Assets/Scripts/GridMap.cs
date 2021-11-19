@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class GridMap : MonoBehaviour
 {
     public GameObject dirtPrefab;
@@ -35,7 +35,14 @@ public class GridMap : MonoBehaviour
         SpawnNestNode(nestNode);
     }
 
-    // Update is called once per frame
+    void Update()
+    {
+        // reset scene/sim on spacebar click
+        if(Input.GetKeyUp("space"))
+        {
+            SceneManager.LoadScene("SampleScene");
+        }
+    }
     void GenerateGrid()
     {
         for(int i = 0; i < rows; i++) {

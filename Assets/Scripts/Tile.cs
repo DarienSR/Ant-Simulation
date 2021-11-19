@@ -13,9 +13,6 @@ public class Tile : MonoBehaviour
 
     private SpriteRenderer spriteR;
 
-    float decreaseColorValue = 10f;
-    float increaseColorValue = 2f;
-
     public float pheromone = 0f;
 
     public bool hasFood;
