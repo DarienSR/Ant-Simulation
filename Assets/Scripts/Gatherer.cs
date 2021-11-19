@@ -2,39 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ant : MonoBehaviour
+public class Gatherer : MonoBehaviour
 {
     public enum State 
     {
-        SEARCHING, // Ant is searching for a food source. 
-        SUCCESS, // Ant has found food and is either returning back to the nest, or is coming from the nest in search of more food.
-        FAIL, // Ant has failed iuts initial search.
-        FOLLOW_SUCCESS, // After an ant has failed its inital search of food and is now following the path of a successful ant (if there are any avaiable)
+        SEARCHING, // Gatherer is searching for a food source. 
+        SUCCESS, // Gatherer has found food and is either returning back to the nest, or is coming from the nest in search of more food.
+        FAIL, // Gatherer has failed iuts initial search.
+        FOLLOW_SUCCESS, // After an gatherer has failed its inital search of food and is now following the path of a successful gatherer (if there are any avaiable)
     }
 
     private int failCap = 225;
     public int searchRadius = 2;
     // This boolean value is used in conjunction with the SUCCESS state.
-    bool hasFood = false; // indicates whether or not the ant is carrying food. If it is (true), it is heading back to the nest, if it is not (false) then it is coming from the nest after a sucessful trip. 
+    bool hasFood = false; // indicates whether or not the gatherer is carrying food. If it is (true), it is heading back to the nest, if it is not (false) then it is coming from the nest after a sucessful trip. 
 
-    public State state; // hold a reference to the current state of the ant 
+    public State state; // hold a reference to the current state of the gatherer 
     public GridMap grid; // hold a reference to the grid so we can access tile information 
    
-    Color antColor; // hold the color of the ant, representing its current state.
-    public int x; // ants x position on the grid 
-    public int y; // ants y position on the grid
+    Color gathererColor; // hold the color of the gatherer, representing its current state.
+    public int x; // gatherers x position on the grid 
+    public int y; // gatherers y position on the grid
 
-    public int index = -1; // path index. Contains the current tile the ant is on
+    public int index = -1; // path index. Contains the current tile the gatherer is on
 
     public List<GameObject> path = new List<GameObject>(); // holds all the path information (tiles)
 
     private UI ui;
 
-    // Set all the default values of the ant.
+    // Set all the default values of the gatherer.
     void Start()
     {
         state = State.SEARCHING; // Set starting state of SEARCHING
-        AssignAntColor(state); // assign ant color based on the state
+        AssignGathererColor(state); // assign gatherer color based on the state
         grid = GameObject.Find("Grid").GetComponent<GridMap>(); // reference the grid object
         ui = GameObject.Find("UI").GetComponent<UI>();
     }
@@ -44,8 +44,8 @@ public class Ant : MonoBehaviour
         Move(); 
     }
 
-    // Assign the color of the ant based its current state.
-    private void AssignAntColor(State state)
+    // Assign the color of the gatherer based its current state.
+    private void AssignGathererColor(State state)
     {
         if(state == State.SEARCHING)
             gameObject.GetComponent<SpriteRenderer>().color = Color.blue;
@@ -57,7 +57,7 @@ public class Ant : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().color = Color.red;
     }
 
-    // Movement logic based on ant state
+    // Movement logic based on gatherer state
     private void Move()
     {   
         CheckIfFailed();
@@ -67,7 +67,7 @@ public class Ant : MonoBehaviour
         {
             RandomWalk();
         }
-        else if(state == State.SUCCESS || state == State.FOLLOW_SUCCESS) // ant has found food
+        else if(state == State.SUCCESS || state == State.FOLLOW_SUCCESS) // gatherer has found food
         {
             if(index != 0 && hasFood) // if you have not reached the nest
             {
@@ -102,12 +102,12 @@ public class Ant : MonoBehaviour
                 path.Clear();
                 index = 0;
                 List<GameObject> temp = new List<GameObject>();
-                foreach (Ant ant in grid.ants)
+                foreach (Gatherer gatherer in grid.gatherers)
                 {
-                    if(ant.state == State.SUCCESS)
+                    if(gatherer.state == State.SUCCESS)
                     {
-                        if(temp.Count == 0) temp = ant.path;
-                        if(ant.path.Count < temp.Count) temp = ant.path;
+                        if(temp.Count == 0) temp = gatherer.path;
+                        if(gatherer.path.Count < temp.Count) temp = gatherer.path;
                     }
                 }
                 if(temp.Count != 0) // if we find a successful path
@@ -150,7 +150,7 @@ public class Ant : MonoBehaviour
             UpdateState(State.FAIL, false);
         }
         if(selectedTile == currentTileGO) return; 
-        MoveAnt(selectedTile);
+        MoveGatherer(selectedTile);
     }
     
     // Should look to see if tiles contain food source, if so move to it. if not, perform a random walk.
@@ -164,7 +164,7 @@ public class Ant : MonoBehaviour
         if(selectedTile != null) // if we find a neighbouring tile with food
         {
             // move to selected tile
-            MoveAnt(selectedTile);
+            MoveGatherer(selectedTile);
             AddToPath(selectedTile);
             return;
         }
@@ -177,7 +177,7 @@ public class Ant : MonoBehaviour
     {
         index--;
         GameObject lastVistedTile = path[index]; 
-        MoveAnt(lastVistedTile);
+        MoveGatherer(lastVistedTile);
         if(state == State.SUCCESS) lastVistedTile.GetComponent<Tile>().UpdatePheromone();
     }
 
@@ -192,11 +192,11 @@ public class Ant : MonoBehaviour
         if(cutPathShort != null) 
         {
             path.RemoveRange(index+1, path.Count - (index+1)); // remove the further away tiles.
-            MoveAnt(cutPathShort);
+            MoveGatherer(cutPathShort);
             AddToPath(cutPathShort);
         } 
         else
-            MoveAnt(lastVistedTile); // no optimization found
+            MoveGatherer(lastVistedTile); // no optimization found
     }
 
     public void SetIndex()
@@ -212,8 +212,8 @@ public class Ant : MonoBehaviour
         index++;
     }
 
-    // update ant's positioning to the selectedTile
-    private void MoveAnt(GameObject selectedTile)
+    // update gatherer's positioning to the selectedTile
+    private void MoveGatherer(GameObject selectedTile)
     {
         x = (int)selectedTile.transform.position.x;
         y = (int)selectedTile.transform.position.y;
@@ -231,6 +231,6 @@ public class Ant : MonoBehaviour
     {
         state = newState;
         hasFood = carryingFood;
-        AssignAntColor(state);
+        AssignGathererColor(state);
     }
 }

@@ -1600,6 +1600,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6018116163927616802, guid: d39326fff9443f341a2054ffcbd0d049,
         type: 3}
+    - target: {fileID: 4147719371422676756, guid: cb0ba7ad0f90cfe4ab8dd9b1992f7a96,
+        type: 3}
+      propertyPath: gathererPrefab
+      value: 
+      objectReference: {fileID: 7713868236454161778, guid: df8f5aea9f844814783ac13ffe945f6c,
+        type: 3}
     - target: {fileID: 4147719371422676757, guid: cb0ba7ad0f90cfe4ab8dd9b1992f7a96,
         type: 3}
       propertyPath: m_Name

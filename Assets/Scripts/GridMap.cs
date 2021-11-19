@@ -7,24 +7,24 @@ public class GridMap : MonoBehaviour
     public GameObject dirtPrefab;
     public GameObject borderPrefab;
     public GameObject grassPrefab;
-    public GameObject antPrefab;
+    public GameObject gathererPrefab;
     public GameObject foodPrefab;
     public GameObject nestPrefab;
 
-    public int antSpawnSize = 1050;
+    public int gathererSpawnSize = 1050;
 
     private Vector2 nestNode = new Vector2(50, 2);
     public GameObject[,] tileMap;
-    public Ant[] ants;
+    public Gatherer[] gatherers;
     int rows = 100;
     int cols = 100;
     // Start is called before the first frame update
     void Start()
     {
         tileMap = new GameObject[rows, cols];
-        ants = new Ant[antSpawnSize];
+        gatherers = new Gatherer[gathererSpawnSize];
         GenerateGrid();
-        SpawnAnts();
+        SpawnGatherers();
         SpawnFood(3, 50);
        
         SpawnFood(50, 30);
@@ -60,17 +60,17 @@ public class GridMap : MonoBehaviour
             return (GameObject)Instantiate(grassPrefab); 
     }
 
-    private void SpawnAnts()
+    private void SpawnGatherers()
     {
-        for(int i = 0; i < antSpawnSize; i++)
+        for(int i = 0; i < gathererSpawnSize; i++)
         {
-            GameObject antGO = (GameObject)Instantiate(antPrefab);
-            antGO.transform.SetParent(GameObject.Find("Colony").transform); // organize all ants under the colony GameObject
-            antGO.transform.position = nestNode; // spawn ants on nest node
-            Ant ant = antGO.GetComponent<Ant>();
-            ant.x = (int)nestNode.x;
-            ant.y = (int)nestNode.y;
-            ants[i] = ant;
+            GameObject gathererGO = (GameObject)Instantiate(gathererPrefab);
+            gathererGO.transform.SetParent(GameObject.Find("Colony").transform); // organize all gatherers under the colony GameObject
+            gathererGO.transform.position = nestNode; // spawn gatherers on nest node
+            Gatherer gatherer = gathererGO.GetComponent<Gatherer>();
+            gatherer.x = (int)nestNode.x;
+            gatherer.y = (int)nestNode.y;
+            gatherers[i] = gatherer;
         }
     }
 
@@ -81,7 +81,7 @@ public class GridMap : MonoBehaviour
             for(int j = 0; j < 15; j++)
             {
                 GameObject foodGO = (GameObject)Instantiate(foodPrefab);
-                foodGO.transform.SetParent(GameObject.Find("FoodSource").transform); // organize all ants under the colony GameObject
+                foodGO.transform.SetParent(GameObject.Find("FoodSource").transform); // organize all gatherers under the colony GameObject
                 foodGO.transform.position = new Vector2(x+i, y+j);
                 tileMap[x+i, y+j].GetComponent<Tile>().hasFood = true;
             }
@@ -91,7 +91,7 @@ public class GridMap : MonoBehaviour
     private void SpawnNestNode(Vector2 pos)
     {
         GameObject nestNode = (GameObject)Instantiate(nestPrefab);
-        nestNode.transform.SetParent(GameObject.Find("Nest").transform); // organize all ants under the colony GameObject
+        nestNode.transform.SetParent(GameObject.Find("Nest").transform); // organize all gatherers under the colony GameObject
         nestNode.transform.position = pos;
     }
 }

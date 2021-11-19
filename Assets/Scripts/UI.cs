@@ -82,7 +82,6 @@ public class UI : MonoBehaviour
 
     public int GetNumOfMovementOptions()
     {
-        Debug.Log(controls.Where(val => val == true).Count());
         return controls.Where(val => val == true).Count();
     }
 }

@@ -5,18 +5,18 @@ using UnityEngine;
 public class Food : MonoBehaviour
 {
   int health = 1;
-  private void OnTriggerEnter2D(Collider2D ant) 
+  private void OnTriggerEnter2D(Collider2D gatherer) 
   {
     health--;
-    Ant antObj = ant.gameObject.GetComponent<Ant>();
+    Gatherer gathererObj = gatherer.gameObject.GetComponent<Gatherer>();
     if(health <= 0)
     {
       Destroy(gameObject); // destory food source
     }
 
-    antObj.grid.tileMap[antObj.x, antObj.y].GetComponent<Tile>().hasFood = false;
-    antObj.UpdateState(Ant.State.SUCCESS, true); 
-    antObj.SetIndex();
+    gathererObj.grid.tileMap[gathererObj.x, gathererObj.y].GetComponent<Tile>().hasFood = false;
+    gathererObj.UpdateState(Gatherer.State.SUCCESS, true); 
+    gathererObj.SetIndex();
   }
 }
 
