@@ -42,6 +42,7 @@ public class GridMap : MonoBehaviour
         {
             SceneManager.LoadScene("SampleScene");
         }
+        if(Input.GetKeyDown("escape")) Application.Quit();
     }
     void GenerateGrid()
     {

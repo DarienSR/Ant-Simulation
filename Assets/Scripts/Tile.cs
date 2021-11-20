@@ -35,6 +35,7 @@ public class Tile : MonoBehaviour
         FadeColor();
     }
 
+    // Check to see if the movement has been selected in the UI. If so, add it to the movement options of the gatherer. 
     private GameObject[] getNeighboursWithinMovement()
     {
         bool[] movementOptions = UI.GetComponent<UI>().GetControls();
@@ -51,7 +52,6 @@ public class Tile : MonoBehaviour
         return movement.ToArray();
 
     }
-
 
     public GameObject SelectNeighbour(int index) 
     {
@@ -88,6 +88,7 @@ public class Tile : MonoBehaviour
         return neighbours;
     }
 
+    // Check to see if the neighbouring tiles have food, if so select one and return them
     public GameObject CheckIfNeighboursHaveFood(int radius)
     {
 		GameObject[] neighbours = getAllNeighbours(radius);

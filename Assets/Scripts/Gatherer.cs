@@ -90,23 +90,23 @@ public class Gatherer : MonoBehaviour
                 }
             }
         }
-        else if(state == State.FAIL)
+        else if(state == State.FAIL) // gatherer has failed to find a food source
         {
             // head back to the nest
             if(index != 0)
             {
                 HeadBackToNest();
             }
-            else
+            else // gatherer has reached the nest
             {
-                path.Clear();
-                index = 0;
-                List<GameObject> temp = new List<GameObject>();
-                foreach (Gatherer gatherer in grid.gatherers)
+                path.Clear(); // reset the failed path
+                index = 0; 
+                List<GameObject> temp = new List<GameObject>(); // create a temp path to assign to a successful one 
+                foreach (Gatherer gatherer in grid.gatherers) // iterate through all the gatherers
                 {
-                    if(gatherer.state == State.SUCCESS)
+                    if(gatherer.state == State.SUCCESS) // find the path in all of the gatherers that has the lowest tile count (i.e. the shortest)
                     {
-                        if(temp.Count == 0) temp = gatherer.path;
+                        if(temp.Count == 0) temp = gatherer.path; 
                         if(gatherer.path.Count < temp.Count) temp = gatherer.path;
                     }
                 }
@@ -114,9 +114,9 @@ public class Gatherer : MonoBehaviour
                 { 
                     foreach(GameObject tile in temp)
                     {
-                        path.Add(tile);
+                        path.Add(tile); // copy the shortest successful gatherers' path
                     }
-                    UpdateState(State.FOLLOW_SUCCESS, false);
+                    UpdateState(State.FOLLOW_SUCCESS, false); // follow the successful path
                     return;
                 }
                 // no path find, just random walk again
@@ -125,6 +125,7 @@ public class Gatherer : MonoBehaviour
         }
     }
 
+    // A function to check if the gatherer has reached the maximum tile count, if so update their state to FAIL
     private void CheckIfFailed()
     {
         if(path.Count >= failCap) UpdateState(State.FAIL, false);
@@ -173,6 +174,7 @@ public class Gatherer : MonoBehaviour
         RandomWalk();
     }
 
+    // A function that traces the path back to the nest. 
     private void HeadBackToNest()
     {
         index--;
@@ -181,6 +183,7 @@ public class Gatherer : MonoBehaviour
         if(state == State.SUCCESS) lastVistedTile.GetComponent<Tile>().UpdatePheromone();
     }
 
+    // A function that heads from the nest back to the food source it came from
     private void HeadBackToFoodSource()
     {
         index++;
@@ -204,14 +207,12 @@ public class Gatherer : MonoBehaviour
         index = path.Count - 1;
     }
 
-
     // Add tile that gameObject just moved to, to the path.
     private void AddToPath(GameObject tile)
     {
         path.Add(tile);
         index++;
     }
-
     // update gatherer's positioning to the selectedTile
     private void MoveGatherer(GameObject selectedTile)
     {
