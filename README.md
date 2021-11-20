@@ -2,7 +2,7 @@
 
 A .zip file has been included if you would like to run the Gatherer Simulation. It includes a .exe that runs the unity application.
 
-<video src="photos/2021-11-20 16-23-48_Trim.mp4"></video>
+https://youtu.be/b9iOIEf51eg - **Click to watch demo**
 
 #### Four States
 
